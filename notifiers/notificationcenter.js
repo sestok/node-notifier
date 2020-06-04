@@ -6,7 +6,7 @@ var Growl = require('./growl');
 var path = require('path');
 var notifier = path.join(
   __dirname,
-  '../vendor/mac.noindex/terminal-notifier.app/Contents/MacOS/terminal-notifier'
+  '../vendor/mac.noindex/CloudTalk-Notifier.app/Contents/MacOS/CloudTalk-Notifier'
 );
 
 var EventEmitter = require('events').EventEmitter;
@@ -27,10 +27,12 @@ function NotificationCenter(options) {
 
   EventEmitter.call(this);
 }
+
 util.inherits(NotificationCenter, EventEmitter);
 var activeId = null;
 
 function noop() {}
+
 function notifyRaw(options, callback) {
   var fallbackNotifier;
   var id = identificator();
@@ -53,7 +55,7 @@ function notifyRaw(options, callback) {
     this,
     options,
     callback,
-    function(data) {
+    function (data) {
       if (activeId !== id) return false;
 
       if (data === 'activate') {
@@ -96,10 +98,10 @@ function notifyRaw(options, callback) {
 }
 
 Object.defineProperty(NotificationCenter.prototype, 'notify', {
-  get: function() {
+  get: function () {
     if (!this._notify) this._notify = notifyRaw.bind(this);
     return this._notify;
-  }
+  },
 });
 
 function identificator() {
