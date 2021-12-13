@@ -1,12 +1,12 @@
-var path = require('path');
-var fs = require('fs');
-var _ = require('../lib/utils');
+const path = require('path');
+const fs = require('fs');
+const _ = require('../lib/utils');
 
-describe('utils', function() {
-  describe('clone', function() {
-    it('should clone nested objects', function() {
-      var obj = { a: { b: 42 }, c: 123 };
-      var obj2 = _.clone(obj);
+describe('utils', function () {
+  describe('clone', function () {
+    it('should clone nested objects', function () {
+      const obj = { a: { b: 42 }, c: 123 };
+      const obj2 = _.clone(obj);
 
       expect(obj).toEqual(obj2);
       obj.a.b += 2;
@@ -15,9 +15,14 @@ describe('utils', function() {
     });
   });
 
-  describe('mapping', function() {
-    it('should map icon for notify-send', function() {
-      var expected = { title: 'Foo', message: 'Bar', icon: 'foobar' };
+  describe('mapping', function () {
+    it('should map icon for notify-send', function () {
+      const expected = {
+        title: 'Foo',
+        message: 'Bar',
+        icon: 'foobar',
+        'expire-time': 10000
+      };
 
       expect(
         _.mapToNotifySend({ title: 'Foo', message: 'Bar', appIcon: 'foobar' })
@@ -28,8 +33,8 @@ describe('utils', function() {
       ).toEqual(expected);
     });
 
-    it('should map short hand for notify-sned', function() {
-      var expected = {
+    it('should map short hand for notify-sned', function () {
+      const expected = {
         urgency: 'a',
         'expire-time': 'b',
         category: 'c',
@@ -42,8 +47,8 @@ describe('utils', function() {
       ).toEqual(expected);
     });
 
-    it('should map icon for notification center', function() {
-      var expected = {
+    it('should map icon for notification center', function () {
+      const expected = {
         title: 'Foo',
         message: 'Bar',
         appIcon: 'foobar',
@@ -60,13 +65,13 @@ describe('utils', function() {
       );
     });
 
-    it('should map icon for growl', function() {
-      var icon = path.join(__dirname, 'fixture', 'coulson.jpg');
-      var iconRead = fs.readFileSync(icon);
+    it('should map icon for growl', function () {
+      const icon = path.join(__dirname, 'fixture', 'coulson.jpg');
+      const iconRead = fs.readFileSync(icon);
 
-      var expected = { title: 'Foo', message: 'Bar', icon: iconRead };
+      const expected = { title: 'Foo', message: 'Bar', icon: iconRead };
 
-      var obj = _.mapToGrowl({ title: 'Foo', message: 'Bar', icon: icon });
+      let obj = _.mapToGrowl({ title: 'Foo', message: 'Bar', icon: icon });
       expect(obj).toEqual(expected);
 
       expect(obj.icon).toBeTruthy();
@@ -78,10 +83,10 @@ describe('utils', function() {
       expect(Buffer.isBuffer(obj.icon)).toBeTruthy();
     });
 
-    it('should not map icon url for growl', function() {
-      var icon = 'http://hostname.com/logo.png';
+    it('should not map icon url for growl', function () {
+      const icon = 'http://hostname.com/logo.png';
 
-      var expected = { title: 'Foo', message: 'Bar', icon: icon };
+      const expected = { title: 'Foo', message: 'Bar', icon: icon };
 
       expect(
         _.mapToGrowl({ title: 'Foo', message: 'Bar', icon: icon })
